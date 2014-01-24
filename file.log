@@ -12,3 +12,26 @@
 [Wed Jan 22 2014 21:18:31 GMT+0100 (Paris, Madrid)] NOTICE a notice message
 [Wed Jan 22 2014 21:18:41 GMT+0100 (Paris, Madrid)] NOTICE a notice message
 [Wed Jan 22 2014 21:18:55 GMT+0100 (Paris, Madrid)] NOTICE a notice message FFFFFFFF
+strict mod !!!!!!
+
+// TODO
+CALLBACK !!!
+module.exports = {
+    testConnectUser: function(username, password, callback){
+        connection.connect();
+        connection.query('SELECT * FROM pictionary.user', function(err, rows, fields) {
+            if (err) throw err;
+            console.log(rows[0].id);
+            rep = rows[0].id;
+            callback(rep);
+        });
+        connection.end();
+    }
+};
+
+psql.testConnectUser(req.body.username, req.body.password, function(rep){
+            console.log('--> POST : '+rep);
+            res.render('login');
+        });
+
+        gerer erreur sql (pas de serveur)
