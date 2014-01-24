@@ -1,0 +1,11 @@
+<%- include include/header.ejs %>
+
+<%if (typeof errorPage!='undefined'){%>
+    <div class="jumbotron">
+        <h1><%=errorPage.title%></h1>
+        <p><%=errorPage.message%></p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="/">Home of pictionary</a></p>
+    </div>
+<%}%>
+
+<%- include include/footer.ejs %>

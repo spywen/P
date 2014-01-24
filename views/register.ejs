@@ -1,0 +1,40 @@
+<%- include include/header.ejs %>
+
+<div id="register">
+
+    <form action="" method="POST" class="form-horizontal center-block">
+        <div class="form-group">
+            <label for="username" class="col-sm-2 control-label text-right">Username</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="datetime" placeholder="Username" id="username" name="username">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="language" class="col-sm-2 control-label text-right">Language</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="language" name="language">
+                  <% for(var i=0; i<langues.length; i++) {%>
+                      <option value="<%=langues[i].code%>"><%=langues[i].titre%></option>
+                  <% } %>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label text-right">Password</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="password" placeholder="Password" id="password" name="password">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword" class="col-sm-2 control-label text-right">Confirm Password</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="password" placeholder="Confirm Password" id="confirmPassword" name="confirmPassword">
+            </div>
+        </div>
+        <input type="submit" value="Register" class="btn btn-lg btn-info"/>
+    </form>
+
+</div>
+
+<%- include include/footer.ejs %>

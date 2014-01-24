@@ -1,0 +1,14 @@
+[Wed Jan 22 2014 21:17:34 GMT+0100 (Paris, Madrid)] DEBUG preparing email
+[Wed Jan 22 2014 21:17:34 GMT+0100 (Paris, Madrid)] INFO sending email
+[Wed Jan 22 2014 21:17:34 GMT+0100 (Paris, Madrid)] ERROR failed to send email
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] DEBUG a debug message
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] INFO a info message
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] NOTICE a notice message
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] WARNING a warning message
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] ERROR a error message
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] CRITICAL a critical message
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] ALERT a alert message
+[Wed Jan 22 2014 21:18:09 GMT+0100 (Paris, Madrid)] EMERGENCY a emergency message
+[Wed Jan 22 2014 21:18:31 GMT+0100 (Paris, Madrid)] NOTICE a notice message
+[Wed Jan 22 2014 21:18:41 GMT+0100 (Paris, Madrid)] NOTICE a notice message
+[Wed Jan 22 2014 21:18:55 GMT+0100 (Paris, Madrid)] NOTICE a notice message FFFFFFFF

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content='True' name='HandheldFriendly' />
+    <meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport' />
+    <title>Pictionary</title>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png">
+    <link rel="stylesheet" href="/static/style/libs/bootstrap.min.css">
+    <link rel="stylesheet/less" type="text/css" href="/static/style/style.less">
+</head>
+    <body>
+    <div class="page-header">
+        <h1>Pictionary
+            <%if (typeof user!='undefined'){%>
+                <a class="btn btn-success btn-xs" href="/logout">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    connected as <%=user.username%>
+                </a>
+            <%}else{%>
+                <a class="btn btn-danger btn-xs" href="/login">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    disconnected
+                </a>
+            <%}%>
+            <a class="btn btn-info btn-xs" href="/play">
+                <span class="glyphicon glyphicon-tower"></span>
+                play
+            </a>
+        </h1>
+    </div>
+
+    <!--Messages (erreurs, infos, etc...-->
+    <%if (typeof message!='undefined'){%>
+        <div class="alert alert-<%=message.type%>"><%=message.message%></div>
+    <%}%>

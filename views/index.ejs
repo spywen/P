@@ -1,0 +1,17 @@
+<%- include include/header.ejs %>
+
+<h2>Connected users :</h2>
+<% if(typeof usersConnected=='undefined' || usersConnected.length==0){%>
+    <div class="well well-sm">Nobody is connected for the moment.</div>
+<%}else{%>
+    <table class="table table-striped">
+        <% for(var i=0; i<usersConnected.length; i++) {%>
+            <tr>
+                <td><%=usersConnected[i].user.username%></td>
+                <td><%=usersConnected[i].user.language%></td>
+            </tr>
+        <% } %>
+    </table>
+<% } %>
+
+<%- include include/footer.ejs %>
