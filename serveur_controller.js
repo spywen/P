@@ -6,7 +6,12 @@ const   path = require('path'),
         express = require('express'),
         app = express(),
         port = 8080;
-
+var http = require('http');
+var io = require('socket.io');
+var events = require('events');
+var  server = http.createServer(app)
+    , io = io.listen(server);
+var moment = require('moment');
 /* routes */
 var     routes = require('./routes'),
         login = require('./routes/login'),
@@ -14,18 +19,23 @@ var     routes = require('./routes'),
         auth_play = require('./routes/auth/play');
 
 
-var http = require('http');
+
 
 var url       = require('url');
 var fs        = require('fs');
-var events = require('events');
-var         io = require('socket.io'),
-            server = require('http').createServer(app);
-            io = io.listen(server);
+//var events = require('events');
+//var         sockets = require('socket.io').listen(app).of('/play');
+
 var Log = require('log')
     , stream = fs.createWriteStream(__dirname + '/file.log', { flags: 'a' })
     , log = new Log('debug', stream);
 //        log.notice('a notice message FFFFFFFF');
+
+
+
+
+
+
 
 /* Modules perso */
 var
@@ -43,9 +53,10 @@ app.configure(function() {
     /*Déclaration du dossier static de ressource client*/
     this.use(express.static(__dirname, '/static'));
     this.use(express.cookieParser());
+    this.sessionStore = new express.session.MemoryStore({ reapInterval: 60000 * 10 });
     this.use(express.session({
         "secret": "pictionarySecretKey",
-        "store":  new express.session.MemoryStore({ reapInterval: 60000 * 10 })
+        "store":  this.sessionStore
     }));
     //Objet req.session.user : contiendra les informations de l'utilisateur connecté !
 })
@@ -69,9 +80,9 @@ app
 
 
 /* ########################################## PAGES PROTEGEES #################################################### */
-
+//[pSession.requireLogin]
     /*---------------------------------------- play ----------------------------------------*/
-    .get('/play',[pSession.requireLogin], auth_play.get)
+    .get('/play', auth_play.get)
 
 
 
@@ -91,30 +102,38 @@ app
     });
 
 if (!module.parent) {
-    app.listen(port)
+    server.listen(port)
 }
 
-
-
 io.sockets.on('connection',function(socket){
+    console.log("Connexion");
     var socket_username = null;
     // User sends his username
     socket.on('user', function (username) {
         socket_username = username;
-        sockets.emit('join', username, Date.now());
+        socket.broadcast.emit('join', username, moment().format('HH:mm:ss'));
     });
     // When user leaves
     socket.on('disconnect', function () {
         if (socket_username) {
-            sockets.emit('bye', socket_username, Date.now());
+            socket.broadcast.emit('bye', socket_username, moment().format('HH:mm:ss'));
         }
     });
     // New message from client = "write" event
     socket.on('write', function (message) {
         if (socket_username) {
-            sockets.emit('message', socket_username, message, Date.now());
+            socket.broadcast.emit('message', socket_username, message, moment().format('HH:mm:ss'));
         } else {
-            socket.emit('error', 'Username is not set yet');
+            socket.broadcast.emit('error', 'Username is not set yet');
         }
+    });
+
+    socket.on('postDraw', function (events) {
+        socket.broadcast.emit('getDraw', events);
+    });
+
+    socket.on('postSwipe', function () {
+        console.log('swipe draw');
+        socket.broadcast.emit('getSwipe');
     });
 });

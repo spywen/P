@@ -1,14 +1,40 @@
 html,body{
   padding: 10px;
+  min-width: 650px;
 }
-
+.clear{
+  clear:both;
+}
 #salle{
   #canvas{
     border:solid black 1px;
-    cursor:url(/static/img/favicon.png),url(/static/img/favicon.png),auto;;
+    &.pencil{
+      cursor:url(/static/img/pencil.png),auto;
+    }
+    &.swipe{
+      cursor:url(/static/img/swipe.png),auto;
+    }
   }
   #tools{
-    width: 60%;
-    margin:10px;
+    margin: auto;
+  }
+  #container_draw{
+    width:630px;
+    margin: auto;
+  }
+  #container_chat{
+    .panel-footer{
+      .row{
+        padding:0 10px;
+      }
+      .col-md-8{
+        padding-right: 0;
+        padding-left: 5px;
+        input{
+          position:relative;
+          left:-5px;
+        }
+      }
+    }
   }
 }
