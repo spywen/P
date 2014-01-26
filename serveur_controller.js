@@ -131,22 +131,28 @@ io.sockets.authorization(function (handshakeData, callback) {
 io.sockets.on('connection',function(socket){
     console.log("Connexion");
 
-    socket.broadcast.emit('join', socket.handshake.user.username, strings.joinRoom, moment().format('HH:mm'));
+    socket.broadcast.emit('join', socket.handshake.user, strings.joinRoom, moment().format('HH:mm'));
+    socket.emit('idRoom', socket.handshake.user.play);
 
     socket.on('disconnect', function () {
-        socket.broadcast.emit('bye', socket.handshake.user.username, strings.leftRoom, moment().format('HH:mm'));
+        socket.broadcast.emit('bye', socket.handshake.user, strings.leftRoom, moment().format('HH:mm'));
+        //On l'enlève de la liste des players
     });
 
     socket.on('write', function (message) {
-        socket.broadcast.emit('message', socket.handshake.user.username, message, moment().format('HH:mm'));
+        socket.broadcast.emit('message', socket.handshake.user, message, moment().format('HH:mm'));
     });
 
     socket.on('postDraw', function (events) {
-        socket.broadcast.emit('getDraw', events);
+        socket.broadcast.emit('getDraw', events, socket.handshake.user);
     });
 
     socket.on('postSwipe', function () {
         console.log('swipe draw');
-        socket.broadcast.emit('getSwipe');
+        socket.broadcast.emit('getSwipe', socket.handshake.user);
     });
+
+
+    //On envoie l'utilisateur pour n'importe quel message qui contient l'id de sa room dans son attribut play
+    //Ainsi les clients filtreront les messages à afficher en fonction de l'appartenance d'un utilisateur à une room ou à une autre
 });

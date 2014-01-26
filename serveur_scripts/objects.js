@@ -61,13 +61,14 @@ module.exports = {
                 return false
             }
             return true;
-        },
-        this.countPlayers = function(){
-            return 1 + this.players.length;
         }
     },
 
     player: function(){
+        this.init = function(user){
+            this.username = user.username;
+            this.id = user.id;
+        },
         this.id = 0,
         this.username = "",
         this.points = 0,

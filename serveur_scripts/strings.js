@@ -15,5 +15,7 @@ module.exports = {
 
     joinRoom : 'Join room',
     leftRoom : "Left room",
-    noNameRoom : "Bad name room. Try a name between 0 and 30 characters."
+    noNameRoom : "Bad name room. Try a name between 0 and 30 characters.",
+    roomOnAir: "Room already onAir.",
+    noRoomToJoin:"No room to join"
 }

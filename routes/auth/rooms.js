@@ -8,13 +8,7 @@ var
     pSession = require('../../serveur_scripts/psession.js'),
     strings = require('../../serveur_scripts/strings.js');
 
-var crypto = require('crypto'),
-    hash = function (pass, salt) {
-        var h = crypto.createHash('sha512');
-        h.update(pass);
-        h.update(salt);
-        return h.digest('base64');
-    };
+var moment = require('moment');
 
 exports.get = function(req, res){
 
@@ -27,14 +21,15 @@ exports.get = function(req, res){
 exports.post = function(req, res){
     var room = new obj.room();
     if(room.checkName(req.body.name)){
-        room.init(hash("pictionary",req.session.user.username), req.body, req.session.user.username);
+        room.init(moment().format('X'), req.body, req.session.user.username);
         pSession.createRoom(req,res,room);
 
         console.log(pSession.getUser(req,res));
 
-        res.render('auth/play',{
-            user : pSession.getUser(req,res)
-        });
+
+
+        console.log("Join the room by the owner (room id : "+room.id+")");
+        res.redirect('/play?room='+room.id);
     }else{
         res.render('auth/rooms',{
             user : pSession.getUser(req,res),

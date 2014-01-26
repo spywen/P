@@ -1,33 +1,48 @@
 <%- include ../include/header.ejs %>
 
-<h2>Rooms :</h2>
-<form action="" class="form-inline" id="room" method="post">
-    <div class="form-group">
-        <label class="sr-only" for="text">Name of room</label>
-        <input type="text" class="form-control" name="name" id="name" placeholder="Name of room">
-    </div>
-    <button type="submit" class="btn btn-primary"">Create my room</button>
-</form>
+<div id="rooms">
+    <h2>Rooms :</h2>
+    <form action="" class="form-inline" id="room" method="post">
+        <div class="form-group">
+            <label class="sr-only" for="text">Name of room</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Name of room">
+        </div>
+        <button type="submit" class="btn btn-primary"">Create my room</button>
+    </form>
 
-<% if(typeof rooms=='undefined' || rooms.length==0){%>
-    <div class="well well-sm">No rooms for the moment. Create it !</div>
-<%}else{%>
-    <table class="table table-striped">
-        <% for(var i=0; i<rooms.length; i++) {%>
+    <% if(typeof rooms=='undefined' || rooms.length==0){%>
+        <div class="well well-sm">No rooms for the moment. Create it !</div>
+    <%}else{%>
+        <table class="table table-striped">
             <tr>
-                <td><%=rooms[i].name%></td>
-                <td><%=rooms[i].players.length + 1%> / 4</td>
-                <td><%=rooms[i].owner%></td>
-                <td>
-                    <%if(rooms[i].onAir){%>
-                        <a><span class="label label-danger">onAir</span></a>
-                    <%}else{%>
-                        <a><span class="label label-info">You are welcome !</span></a>
-                    <%}%>
-                </td>
+                <th>Name</th>
+                <th>Players</th>
+                <th>Owner</th>
+                <th>State</th>
+                <th>Access</th>
             </tr>
-        <% } %>
-    </table>
-<% } %>
-
+            <% for(var i=0; i<rooms.length; i++) {%>
+                <tr>
+                    <td><%=rooms[i].name%></td>
+                    <td><%=rooms[i].players.length%> / 4</td>
+                    <td><%=rooms[i].owner%></td>
+                    <td>
+                        <%if(rooms[i].onAir){%>
+                            <a><span class="label label-danger">onAir</span></a>
+                        <%}else{%>
+                            <span class="label label-info">You are welcome !</span>
+                        <%}%>
+                    </td>
+                    <td>
+                        <%if(!rooms[i].onAir){%>
+                            <a href="/play?room=<%=rooms[i].id%>" class="btn btn-info">Join the room</a>
+                        <%}else{%>
+                            <a href="/play?room=<%=rooms[i].id%>" disabled="disabled" class="btn btn-warning">Room on Air</a>
+                        <%}%>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+    <% } %>
+</div>
 <%- include ../include/footer.ejs %>
