@@ -8,13 +8,14 @@ var messagesArea = document.getElementById('messagesArea');
 
 
 var socketEvents_receive = {
-    message: function(username,message,time){
+    message: function(username,message,time,indic){
         if (typeof time != 'string') {
          var date = new Date(time);
-         time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+            time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
          }
-        var line = '[' + time + '] <strong>' + username + '</strong>: ' + message + '<br />';
-        messagesArea.innerHTML = line + messagesArea.innerHTML;
+        var line = '<div class="row '+indic+'"><span class="time">[' + time + ']</span> <strong>' + username + '</strong><span class="message">: ' + message + '</span></div>';
+        messagesArea.innerHTML = messagesArea.innerHTML + line;
+        messagesArea.scrollTop = messagesArea.scrollHeight;
     },
     draw : function(events){
         canvas.color = events.color;
@@ -34,7 +35,7 @@ var socketEvents_receive = {
 var socketEvents_send = {
     message : function(e){
         socket.emit('write', inputText.value);
-        socketEvents_receive.message("I", inputText.value, moment().format('HH:mm:ss'));
+        socketEvents_receive.message("Me", inputText.value, moment().format('HH:mm'),"me");
         inputText.value = '';
         e.preventDefault();
     },
@@ -50,24 +51,19 @@ var socketEvents_send = {
 
 socket
     .on('connect', function () {
-        // at connection, first send my username
         socket.emit('user', "mm");
     })
-    .on('join', function (username, time) {
-        // someone joined room
-        socketEvents_receive.message(username, 'joined room', time);
+    .on('join', function (username, message, time) {
+        socketEvents_receive.message(username, message, time, "join");
     })
-    .on('bye', function (username, time) {
-        // someone left room
-        socketEvents_receive.message(username, 'left room', time);
+    .on('bye', function (username, message, time) {
+        socketEvents_receive.message(username, message, time, "bye");
     })
     .on('error', function (error) {
-        // an error occured
-        alert('Error: ' + error);
+        document.location.href="index";
     })
     .on('message', function (username, message, time) {
-        // someone wrote a message
-        socketEvents_receive.message(username, message, time);
+        socketEvents_receive.message(username, message, time, "message");
     })
     .on('getDraw', function (trace){
         socketEvents_receive.draw(trace);
@@ -79,4 +75,8 @@ socket
 
 //Events
 chatForm.addEventListener('submit',socketEvents_send.message);
-
+inputText.focus();
+//Ecrire automatiquement dans le chat à la pression d'une touche
+document.onkeydown = function(){
+    inputText.focus();
+};

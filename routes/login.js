@@ -19,8 +19,7 @@ exports.get = function(req, res){
 exports.post = function(req, res){
     var user = new obj.user();
     user.init(req.sessionID, req.body);
-    var userAlreadyConnected = false;
-
+    //var userAlreadyConnected = false;
 
     psql.connectUser(user)
         .fail(function(err){
@@ -33,24 +32,22 @@ exports.post = function(req, res){
                     var session = JSON.parse(sessions[i]);
                     if(session.user!=undefined){
                         if(session.user.id==user.id){
-                            userAlreadyConnected = true;
+                            //userAlreadyConnected = true;
+                            pSession.disconnectUser(req,session.user);
                         }
                     }
                 }
-                if(userAlreadyConnected){
+                /*if(userAlreadyConnected){
                     console.log('Vérification : utilisateur déjà connecté ? OUI');
                     res.render('login',{
                         user : req.session.user,
                         message : new obj.pmessage("danger",strings.alreadyConnected)
                     });
-                }else{
-                    console.log('Vérification : utilisateur déjà connecté ? NON');
-                    console.log('Connexion d\'un utilisateur : '+user.username);
-                    //var userSession = new obj.user.init(req.sessionID, user);
-                    console.log(user);
+                }else{*/
+                    console.log('Connexion d\'un utilisateur : '+user);
                     pSession.connect(req,user);
                     res.redirect('/');
-                }
+                /*}*/
             });
         });
 }

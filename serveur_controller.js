@@ -16,9 +16,11 @@ var moment = require('moment');
 var     routes = require('./routes'),
         login = require('./routes/login'),
         register = require('./routes/register'),
-        auth_play = require('./routes/auth/play');
+        auth_play = require('./routes/auth/play'),
+        auth_rooms = require('./routes/auth/rooms');
 
-
+var connect = require('express/node_modules/connect');
+var cookie = require('express/node_modules/cookie');
 
 
 var url       = require('url');
@@ -80,10 +82,10 @@ app
 
 
 /* ########################################## PAGES PROTEGEES #################################################### */
-//[pSession.requireLogin]
     /*---------------------------------------- play ----------------------------------------*/
-    .get('/play', auth_play.get)
-
+    .get('/play', [pSession.requireLogin], auth_play.get)
+    .get('/rooms', [pSession.requireLogin], auth_rooms.get)
+    .post('/rooms', [pSession.requireLogin], auth_rooms.post)
 
 
     /*---------------------------------------- errors pages ----------------------------------------*/
@@ -105,27 +107,38 @@ if (!module.parent) {
     server.listen(port)
 }
 
+
+io.sockets.authorization(function (handshakeData, callback) {
+    var cookies = cookie.parse(handshakeData.headers.cookie);
+    var s = cookies['connect.sid']
+    var sessionID = s.slice(2, s.lastIndexOf('.'))
+
+    if (!sessionID) {
+        callback('No session', false);
+    } else {
+        handshakeData.sessionID = sessionID;
+        app.sessionStore.get(sessionID, function (err, session) {
+            if (!err && session && session.user && session.user.username) {
+                handshakeData.user = session.user;
+                callback(null, true);
+            } else {
+                callback('User not authenticated', false);
+            }
+        });
+    }
+});
+
 io.sockets.on('connection',function(socket){
     console.log("Connexion");
-    var socket_username = null;
-    // User sends his username
-    socket.on('user', function (username) {
-        socket_username = username;
-        socket.broadcast.emit('join', username, moment().format('HH:mm:ss'));
-    });
-    // When user leaves
+
+    socket.broadcast.emit('join', socket.handshake.user.username, strings.joinRoom, moment().format('HH:mm'));
+
     socket.on('disconnect', function () {
-        if (socket_username) {
-            socket.broadcast.emit('bye', socket_username, moment().format('HH:mm:ss'));
-        }
+        socket.broadcast.emit('bye', socket.handshake.user.username, strings.leftRoom, moment().format('HH:mm'));
     });
-    // New message from client = "write" event
+
     socket.on('write', function (message) {
-        if (socket_username) {
-            socket.broadcast.emit('message', socket_username, message, moment().format('HH:mm:ss'));
-        } else {
-            socket.broadcast.emit('error', 'Username is not set yet');
-        }
+        socket.broadcast.emit('message', socket.handshake.user.username, message, moment().format('HH:mm'));
     });
 
     socket.on('postDraw', function (events) {

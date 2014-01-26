@@ -9,7 +9,7 @@
 </head>
     <body>
     <div class="page-header">
-        <h1>Pictionary
+        <h1><a href="/index" class="title">Pictionary</a>
             <%if (typeof user!='undefined'){%>
                 <a class="btn btn-success btn-xs" href="/logout">
                     <span class="glyphicon glyphicon-ok"></span>
@@ -21,10 +21,15 @@
                     disconnected
                 </a>
             <%}%>
-            <a class="btn btn-info btn-xs" href="/play">
-                <span class="glyphicon glyphicon-tower"></span>
-                play
-            </a>
+            <!--PROTECT !!!!-->
+                <a class="btn btn-info btn-xs" href="/play">
+                    <span class="glyphicon glyphicon-play"></span>
+                    play
+                </a>
+                <a class="btn btn-info btn-xs" href="/rooms">
+                    <span class="glyphicon glyphicon-tower"></span>
+                    Rooms
+                </a>
         </h1>
     </div>
 

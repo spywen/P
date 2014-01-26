@@ -1,0 +1,33 @@
+<%- include ../include/header.ejs %>
+
+<h2>Rooms :</h2>
+<form action="" class="form-inline" id="room" method="post">
+    <div class="form-group">
+        <label class="sr-only" for="text">Name of room</label>
+        <input type="text" class="form-control" name="name" id="name" placeholder="Name of room">
+    </div>
+    <button type="submit" class="btn btn-primary"">Create my room</button>
+</form>
+
+<% if(typeof rooms=='undefined' || rooms.length==0){%>
+    <div class="well well-sm">No rooms for the moment. Create it !</div>
+<%}else{%>
+    <table class="table table-striped">
+        <% for(var i=0; i<rooms.length; i++) {%>
+            <tr>
+                <td><%=rooms[i].name%></td>
+                <td><%=rooms[i].players.length + 1%> / 4</td>
+                <td><%=rooms[i].owner%></td>
+                <td>
+                    <%if(rooms[i].onAir){%>
+                        <a><span class="label label-danger">onAir</span></a>
+                    <%}else{%>
+                        <a><span class="label label-info">You are welcome !</span></a>
+                    <%}%>
+                </td>
+            </tr>
+        <% } %>
+    </table>
+<% } %>
+
+<%- include ../include/footer.ejs %>

@@ -11,5 +11,9 @@ module.exports = {
     title_404 : 'Unknown page... :(',
     message_404 : 'Sorry for this.',
     title_500 : 'Server error... :(',
-    message_500 : 'Sorry for this.'
+    message_500 : 'Sorry for this.',
+
+    joinRoom : 'Join room',
+    leftRoom : "Left room",
+    noNameRoom : "Bad name room. Try a name between 0 and 30 characters."
 }

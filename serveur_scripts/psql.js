@@ -23,18 +23,21 @@ var crypto = require('crypto'),
 
 module.exports = {
     connectUser: function(user){
-        var username = user.username,
-            password = hash(user.password,user.username);
 
         var dfd = new _.Deferred();
-        var query = connexion.query('SELECT * FROM pictionary.user WHERE username = ? AND password = ?', [username,password], function(err, rows) {
+        var query = connexion.query('SELECT * FROM pictionary.user WHERE username = ? AND password = ?', [user.username,hash(user.password,user.username)], function(err, rows) {
             console.log(query.sql);
             if (err){
                 console.log(err);
                 dfd.fail(strings.error);
             }else{
                 if(rows.length == 1){
-                    dfd.resolve(rows[0]);
+                    user.password="security";
+                    user.passwordHash = "security";
+                    user.language = rows[0].language;
+                    user.id = rows[0].id;
+
+                    dfd.resolve(user);
                 }else{
                     dfd.reject(strings.badCredential);
                 }

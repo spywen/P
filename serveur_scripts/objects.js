@@ -19,6 +19,7 @@ module.exports = {
         this.sessionId = "",
         this.play = false,
         this.passwordHash = "",
+        this.game = null,
         this.init = function(sessionId, user){
             this.id = user.id;
             this.username = user.username;
@@ -35,5 +36,44 @@ module.exports = {
             else
                 return false;
         }
+    },
+    room: function(){
+        this.init = function(id, room, owner){
+            this.name = room.name;
+            this.owner = owner;
+            this.id = id;
+        },
+        this.owner = "",
+        this.id = 0,
+        this.name = "",
+        this.players = [],
+        this.default_properties = {
+            maxPlayers : 4,
+            minPlayers : 2,
+            pointOffer : 10,
+            durationGame : 600,//10 minutes en secondes
+            durationHandler : 60
+        },
+        this.onAir = false,//False : en attente de joueur, True : en cours
+        this.wordToGuess = "",
+        this.checkName = function(name){
+            if(name.length > 30 || name == '' || name=='undefined'){
+                return false
+            }
+            return true;
+        },
+        this.countPlayers = function(){
+            return 1 + this.players.length;
+        }
+    },
+
+    player: function(){
+        this.id = 0,
+        this.username = "",
+        this.points = 0,
+        this.deviner = 0,
+        this.faitDeviner = 0,
+        this.averageTimeToDeviner = 0,
+        this.averageTimeToFaireDeviner = 0
     }
 }

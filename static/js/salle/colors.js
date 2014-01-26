@@ -29,7 +29,7 @@ var tools = document.getElementById("tools");
         }
         else{
             buttonColor.setAttribute("onclick","canvas.changeColor(this,'"+colors[i]+"')");
-            iconColor.setAttribute("class","glyphicon glyphicon-adjust color");
+            iconColor.setAttribute("class","glyphicon glyphicon-pencil color");
             iconColor.style.color = colors[i];
         }
         buttonColor.appendChild(iconColor);

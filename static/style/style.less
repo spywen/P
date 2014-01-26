@@ -5,9 +5,23 @@ html,body{
 .clear{
   clear:both;
 }
+
+.page-header{
+  h1{
+    .title{
+      &:hover{
+        text-decoration: none;
+      }
+      color:#333;
+    }
+  }
+
+}
+
 #salle{
   #canvas{
-    border:solid black 1px;
+    border: solid rgb(233, 233, 233) 2px;
+    border-radius: 5px;
     &.pencil{
       cursor:url(/static/img/pencil.png),auto;
     }
@@ -33,6 +47,52 @@ html,body{
         input{
           position:relative;
           left:-5px;
+        }
+      }
+    }
+
+    #messagesArea{
+      max-height: 175px;
+      overflow-y: scroll;
+      .row{
+        word-break: break-all;
+        padding: 0 10px;
+        &.message{
+          color: #5e5e5e;
+        }
+        &.me{
+          strong{
+            color: rgb(97, 198, 255);
+          }
+          color: #5e5e5e;
+        }
+        &.join{
+          strong{
+            font-style: italic;
+          }
+          span{
+            &.message{
+              font-style: italic;
+            }
+          }
+          font-size: 10px;
+          color: #88a8ff;
+        }
+        &.bye{
+          strong{
+            font-style: italic;
+          }
+          span{
+            &.message{
+              font-style: italic;
+            }
+          }
+          font-size: 10px;
+          color: #d76b7d;
+        }
+        .time{
+          font-size: 9px;
+          color: #dddddd;
         }
       }
     }

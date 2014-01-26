@@ -5,9 +5,8 @@
 var
     obj = require('../serveur_scripts/objects.js'),
     psql = require('../serveur_scripts/psql.js'),
-    pSession = require('../serveur_scripts/psession.js');
-
-var strings = require('../serveur_scripts/strings.js');
+    pSession = require('../serveur_scripts/psession.js'),
+    strings = require('../serveur_scripts/strings.js');
 
 exports.get = function(req, res){
     if(pSession.isConnected(req))

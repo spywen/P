@@ -20,8 +20,30 @@ module.exports = {
     disconnect: function(req,res){
         req.session.destroy();
         res.redirect('/');
+    },
+    disconnectUser:function(req,user){
+        req.sessionStore.destroy(user.sessionId,null);
+    },
+    createRoom:function(req,res, room){
+        req.session.user.game = room;
+    },
+    getUser:function(req,res){
+        return req.session.user;
+    },
+    getRooms:function(req,res){
+        var rooms = [];
+        req.sessionStore.all(function(err,sessions){
+            for (var i=0; i<sessions.length; i++) {
+                var session = JSON.parse(sessions[i]);
+                if(session.user!=undefined){
+                    if(session.user.game!=null){
+                        rooms.push(session.user.game);
+                    }
+                }
+            }
+        });
+        return rooms;
     }
-
 };
 /*
 var powerLevel = function(level) {
